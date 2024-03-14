@@ -6,7 +6,7 @@ const app = express();
 const PORT = 3000;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/TestAPI', { useNewUrlParser: true, useUnifiedTopology: true, dbName: 'TestAPI' });
+mongoose.connect('mongodb+srv://det:1928374655@cluster0.geicsiu.mongodb.net/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: 'TestAPI' });
 
 // Define Animal Schema
 const animalSchema = new mongoose.Schema({
