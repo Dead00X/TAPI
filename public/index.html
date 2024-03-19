@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animal Adoption</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Pet shop</h1>
+  </header>
+  
+  <main>
+    <section id="animal-list">
+      <h2>Available Animals</h2>
+      <ul id="animals"></ul>
+      <button id="showAllButton">Show All Animals</button> <!-- เพิ่มปุ่ม Show All Animals -->
+    </section>
+    
+    <section id="add-animal">
+      <h2>Add a New Animal</h2>
+      <form id="animal-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="breed">Breed:</label>
+        <input type="text" id="breed" name="breed" required><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+        
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select><br>
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" required><br>
+        
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+          <option value="Available">Available</option>
+          <option value="Reserved">Reserved</option>
+          <option value="Sold">Sold</option>
+        </select><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
+        
+        <button type="submit">Add Animal</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>

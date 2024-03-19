@@ -43,4 +43,5 @@ router.delete('/:animalId', async (req, res) => {
   }
 });
 
-module.exports = router; // Export router for use in server.js
+
+module.exports = router; 
