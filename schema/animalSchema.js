@@ -9,7 +9,9 @@ const animalSchema = new mongoose.Schema({
   Price: { type: Number, required: true },
   Status: { type: String, enum: ['Available', 'Reserved', 'Sold'], required: true },
   Images: [String],
-  Description: String
+  Description: String,
 });
 
-module.exports = mongoose.model('Animal', animalSchema);
+const Animal = mongoose.model('Animal', animalSchema);
+
+module.exports = Animal; // Export Animal model for use in other files

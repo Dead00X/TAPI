@@ -1,6 +1,7 @@
 const express = require('express');
+const Animal = require('../schema/animalSchema'); // Import Animal model
+
 const router = express.Router();
-const Animal = require('../models/animal'); // Import the Animal model
 
 // Create a new animal
 router.post('/', async (req, res) => {
@@ -42,4 +43,4 @@ router.delete('/:animalId', async (req, res) => {
   }
 });
 
-module.exports = router; // Export the router for use in server.js
+module.exports = router; // Export router for use in server.js
