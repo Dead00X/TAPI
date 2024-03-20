@@ -31,15 +31,19 @@ section {
 }
 
 form label {
-  display: inline-block;
-  width: 100px;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
 form input,
 form select,
 form textarea {
   margin-bottom: 1rem;
-  width: 100%;
+  width: calc(100% - 2px);
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 form button {
@@ -48,6 +52,7 @@ form button {
   color: #fff;
   padding: 0.5rem 1rem;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 form button:hover {
@@ -69,4 +74,24 @@ form button:hover {
 
 #animals li p {
   margin-top: 0.5rem;
+}
+
+.pet-shop {
+  display: flex;
+  align-items: center;
+}
+
+.pet-shop-details {
+  flex: 1;
+}
+
+.pet-shop-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pet-shop-image img {
+  width: 675px; /* ปรับขนาดของรูปภาพตามที่ต้องการ */
+  height: auto;
 }

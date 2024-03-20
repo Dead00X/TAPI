@@ -14,8 +14,31 @@
   <main>
     <section id="animal-list">
       <h2>Available Animals</h2>
-      <ul id="animals"></ul>
+      <ul id="animals">
+        <% for (const animal of data) { %>
+          <li>
+            <h3><%= animal.Name %></h3>
+            <p>Breed: <%= animal.Breed %></p>
+            <p>Age: <%= animal.Age %></p>
+            <p>Gender: <%= animal.Gender %></p>
+            <p>Price: <%= animal.Price %></p>
+            <p>Status: <%= animal.Status %></p>
+            <p>Description: <%= animal.Description %></p>
+          </li>
+        <% } %>
+      </ul>
       <button id="showAllButton">Show All Animals</button>
+    </section>
+    
+    <section id="pet-shop-1">
+      <div class="pet-shop">
+        <div class="pet-shop-details">
+          <!-- เนื้อหาที่ต้องการเพิ่ม -->
+        </div>
+        <div class="pet-shop-image">
+          <img src="/images/imagepetshop.jpg" alt="Pet Shop Image">
+        </div>
+      </div>
     </section>
     
     <section id="add-animal">

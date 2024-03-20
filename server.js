@@ -1,16 +1,27 @@
+// server.js
+
 require('dotenv').config(); // Load environment variables
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const fs = require('fs');
 const path = require('path');
 const ngrok = require('ngrok');
+const ejs = require('ejs'); // Import EJS
 
 const animalRoutes = require('./routes/animalsEndpoints'); // Import animal routes
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// Function to get data (dummy function for demonstration purposes)
+async function getData() {
+  // In a real application, you would query the database to get the data
+  return [
+    { Name: 'Dog', Breed: 'Labrador', Age: 3, Gender: 'Male', Price: 500, Status: 'Available', Description: 'Friendly and playful' },
+    { Name: 'Cat', Breed: 'Siamese', Age: 2, Gender: 'Female', Price: 300, Status: 'Reserved', Description: 'Independent and curious' },
+  ];
+}
 
 // Connect to MongoDB
 const mongoURI = process.env.MONGODB_URI;
@@ -26,27 +37,22 @@ app.use(bodyParser.json());
 // Use imported animal routes
 app.use('/animals', animalRoutes);
 
-// Get data for index.html
-const getData = () => {
-  return new Promise((resolve, reject) => {
-    fs.readFile('data.json', 'utf8', (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(JSON.parse(data));
-      }
-    });
-  });
-};
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
 
 // Serve static files from the public directory
 const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
-// Handle request for index.html
-app.get('/index', async (req, res) => {
-  const data = await getData();
-  res.render('index', { data });
+// Handle request for index.ejs
+app.get('/', async (req, res) => {
+  try {
+    const data = await getData();
+    res.render('index', { data }); // Render index.ejs with data
+  } catch (error) {
+    console.error('Error getting data:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Start ngrok and bind it to port 3000
