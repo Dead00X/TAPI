@@ -18,8 +18,7 @@ const PORT = process.env.PORT || 3000;
 async function getData() {
   // In a real application, you would query the database to get the data
   return [
-    { Name: 'Dog', Breed: 'Labrador', Age: 3, Gender: 'Male', Price: 500, Status: 'Available', Description: 'Friendly and playful' },
-    { Name: 'Cat', Breed: 'Siamese', Age: 2, Gender: 'Female', Price: 300, Status: 'Reserved', Description: 'Independent and curious' },
+    { Name: 'ไอ้ทอง', Breed: 'Varanus salvator', Age: 3, Gender: 'Male', Price: 'free', Status: 'หาบ้านใหม่', Description: 'Friendly and playful' },
   ];
 }
 
