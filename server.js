@@ -8,11 +8,20 @@ const mongoose = require('mongoose');
 const path = require('path');
 const ngrok = require('ngrok');
 const ejs = require('ejs'); // Import EJS
+const cors = require('cors');
 
 const animalRoutes = require('./routes/animalsEndpoints'); // Import animal routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+
+
+const corsOptions = {
+  origin: ['https://healword.me/'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  optionsSuccessStatus: 200,
+};
 
 // Function to get data (dummy function for demonstration purposes)
 async function getData() {
