@@ -1,79 +1,78 @@
-// server.js
-
-require('dotenv').config(); // Load environment variables
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const ngrok = require('ngrok');
-const ejs = require('ejs'); // Import EJS
+const ejs = require('ejs');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
-const animalRoutes = require('./routes/animalsEndpoints'); // Import animal routes
+const animalRoutes = require('./routes/animalsEndpoints');
+const authRoutes = require('./routes/authRoutes'); // Import auth routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const JWT_SECRET = process.env.JWT_SECRET;
 
-
-const corsOptions = {
-  origin: ['https://healword.me/'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  optionsSuccessStatus: 200,
-};
-
-// Function to get data (dummy function for demonstration purposes)
-async function getData() {
-  // In a real application, you would query the database to get the data
-  return [
-    { Name: 'ไอ้ทอง', Breed: 'Varanus salvator', Age: 3, Gender: 'Male', Price: 'free', Status: 'หาบ้านใหม่', Description: 'Friendly and playful' },
-  ];
+function generateToken(user) {
+  return jwt.sign({ data: user }, JWT_SECRET, { expiresIn: '1h' });
 }
 
-// Connect to MongoDB
+function verifyToken(req, res, next) {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ message: 'Unauthorized' });
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({ message: 'Unauthorized' });
+    req.user = decoded.data;
+    next();
+  });
+}
+
+async function getData() {
+  try {
+    // แทนที่ด้วยคิวรี่ฐานข้อมูลจริงโดยใช้ Mongoose
+    return [
+      { Name: 'ไอ้ทอง', Breed: 'Varanus salvator', Age: 3, Gender: 'Male', Price: 'free', Status: 'หาบ้านใหม่', Description: 'Friendly and playful' },
+    ];
+  } catch (error) {
+    console.error('Error getting data:', error);
+    // พิจารณาการส่งคืนการตอบสนองข้อผิดพลาดที่ให้ข้อมูลมากขึ้นที่นี่
+    return null;
+  }
+}
+
 const mongoURI = process.env.MONGODB_URI;
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
   dbName: 'TestAPI',
 });
 
-// Body parser middleware
 app.use(bodyParser.json());
+app.use('/auth', authRoutes); // ใช้เส้นทางการยืนยันตัวตน
+app.use('/animals', verifyToken, animalRoutes);
 
-// Use imported animal routes
-app.use('/animals', animalRoutes);
-
-// Set EJS as the view engine
 app.set('view engine', 'ejs');
 
-// Serve static files from the public directory
 const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
-// Handle request for index.ejs
 app.get('/', async (req, res) => {
   try {
     const data = await getData();
-    res.render('index', { data }); // Render index.ejs with data
+    if (data) { // ตรวจสอบว่าการดึงข้อมูลสำเร็จหรือไม่
+      res.render('index', { data });
+    } else {
+      res.status(500).send('Internal Server Error (Data retrieval failed)');
+    }
   } catch (error) {
-    console.error('Error getting data:', error);
+    console.error('Error rendering the page:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// Start ngrok and bind it to port 3000
-ngrok.connect({
-  proto: 'http',
-  addr: PORT,
-}).then(url => {
-  console.log(`Ngrok URL: ${url}`);
-}).catch(error => {
-  console.error('Error starting ngrok:', error);
-});
+// ... (โค้ดที่เหลือของคุณ รวมถึงการจัดการข้อผิดพลาดที่เป็นไปได้สำหรับเส้นทางอื่น ๆ )
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
