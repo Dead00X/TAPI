@@ -1,8 +1,10 @@
-require('dotenv').config();
+// server.js
+require('dotenv').config(); // Load environment variables
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const ngrok = require('ngrok');
 const ejs = require('ejs');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -31,25 +33,21 @@ function verifyToken(req, res, next) {
 }
 
 async function getData() {
-  try {
-    // แทนที่ด้วยคิวรี่ฐานข้อมูลจริงโดยใช้ Mongoose
-    return [
-      { Name: 'ไอ้ทอง', Breed: 'Varanus salvator', Age: 3, Gender: 'Male', Price: 'free', Status: 'หาบ้านใหม่', Description: 'Friendly and playful' },
-    ];
-  } catch (error) {
-    console.error('Error getting data:', error);
-    // พิจารณาการส่งคืนการตอบสนองข้อผิดพลาดที่ให้ข้อมูลมากขึ้นที่นี่
-    return null;
-  }
+  // In a real application, you would query the database to get the data
+  return [
+    { Name: 'ไอ้ทอง', Breed: 'Varanus salvator', Age: 3, Gender: 'Male', Price: 'free', Status: 'หาบ้านใหม่', Description: 'Friendly and playful' },
+  ];
 }
 
 const mongoURI = process.env.MONGODB_URI;
 mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
   dbName: 'TestAPI',
 });
 
 app.use(bodyParser.json());
-app.use('/auth', authRoutes); // ใช้เส้นทางการยืนยันตัวตน
+app.use('/auth', authRoutes); // Use auth routes
 app.use('/animals', verifyToken, animalRoutes);
 
 app.set('view engine', 'ejs');
@@ -60,18 +58,21 @@ app.use(express.static(publicPath));
 app.get('/', async (req, res) => {
   try {
     const data = await getData();
-    if (data) { // ตรวจสอบว่าการดึงข้อมูลสำเร็จหรือไม่
-      res.render('index', { data });
-    } else {
-      res.status(500).send('Internal Server Error (Data retrieval failed)');
-    }
+    res.render('index', { data });
   } catch (error) {
-    console.error('Error rendering the page:', error);
+    console.error('Error getting data:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// ... (โค้ดที่เหลือของคุณ รวมถึงการจัดการข้อผิดพลาดที่เป็นไปได้สำหรับเส้นทางอื่น ๆ )
+ngrok.connect({
+  proto: 'http',
+  addr: PORT,
+}).then(url => {
+  console.log(`Ngrok URL: ${url}`);
+}).catch(error => {
+  console.error('Error starting ngrok:', error);
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
