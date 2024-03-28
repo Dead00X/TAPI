@@ -8,13 +8,13 @@ const jwt = require('jsonwebtoken');
 
 const animalRoutes = require('./routes/animalsEndpoints');
 const authRoutes = require('./routes/authRoutes'); // Import auth routes
-
+const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const whitelist = ['https://healworld.me/','http://localhost:5173/']; // whitelist ของ origins ที่อนุญาต
+const whitelist = ['https://healworld.me/', 'http://localhost:5173/']; // whitelist ของ origins ที่อนุญาต
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) {
