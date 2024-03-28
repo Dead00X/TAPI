@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 //cros
-const whitelist = ['https://healworld.me/', 'http://localhost:5173/']; 
+const whitelist = ['https://healworld.me', 'http://localhost:5173/']; 
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) {
@@ -28,7 +28,7 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  optionsSuccessStatus: 200, /
+  optionsSuccessStatus: 200, 
 };
 
 app.use(cors(corsOptions));
