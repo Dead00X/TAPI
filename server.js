@@ -14,20 +14,21 @@ const PORT = process.env.PORT || 3000;
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const whitelist = ['https://healworld.me/', 'http://localhost:5173/']; // whitelist ของ origins ที่อนุญาต
+//cros
+const whitelist = ['https://healworld.me/', 'http://localhost:5173/']; 
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) {
       return callback(null, true);
     }
-    if (whitelist.indexOf(origin) !== -1) { // ตรวจสอบว่า origin อยู่ใน whitelist หรือไม่
+    if (whitelist.indexOf(origin) !== -1) { 
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // กำหนด methods ที่อนุญาต
-  optionsSuccessStatus: 200, // กำหนด HTTP status code สำหรับ CORS preflight success
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  optionsSuccessStatus: 200, /
 };
 
 app.use(cors(corsOptions));
