@@ -4,9 +4,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const ngrok = require('ngrok');
-const ejs = require('ejs');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 const animalRoutes = require('./routes/animalsEndpoints');
@@ -44,6 +41,10 @@ mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: 'TestAPI',
+}).then(() => {
+  console.log('MongoDB connected successfully');
+}).catch((err) => {
+  console.error('MongoDB connection error:', err);
 });
 
 app.use(bodyParser.json());
@@ -63,15 +64,6 @@ app.get('/', async (req, res) => {
     console.error('Error getting data:', error);
     res.status(500).send('Internal Server Error');
   }
-});
-
-ngrok.connect({
-  proto: 'http',
-  addr: PORT,
-}).then(url => {
-  console.log(`Ngrok URL: ${url}`);
-}).catch(error => {
-  console.error('Error starting ngrok:', error);
 });
 
 app.listen(PORT, () => {
